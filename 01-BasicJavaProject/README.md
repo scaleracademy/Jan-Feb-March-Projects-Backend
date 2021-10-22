@@ -11,5 +11,5 @@
 Go to folder `/build/libs`
 
 ```shell
-java -jar 01-BasicJavaProject-1.0-SNAPSHOT.jar
+java -jar 01-BasicJavaProject-1.0-SNAPSHOT.jar <YOURNAME>
 ```

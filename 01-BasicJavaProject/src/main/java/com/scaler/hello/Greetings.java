@@ -1,4 +1,4 @@
-package com.scaler;
+package com.scaler.hello;
 
 import java.util.Random;
 
