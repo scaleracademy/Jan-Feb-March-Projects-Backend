@@ -1,10 +1,8 @@
 package com.scaler.springdemo1.tasks;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,6 +10,12 @@ import java.util.List;
 @RequestMapping("/tasks")
 @RestController
 public class TasksController {
+
+    @Data
+    static class AddTaskBody {
+        String task;
+    }
+
     @Autowired TasksService tasksService;
 
     @GetMapping("/")
@@ -19,8 +23,26 @@ public class TasksController {
         return tasksService.getAllTasks();
     }
 
-    @GetMapping("/:id")
-    String getSomethingElse(@PathVariable int taskId) {
-        return "we will return something else here";
+    @GetMapping("/{id}")
+    TasksService.Task getSomethingElse(@PathVariable("id") int taskId) {
+        return tasksService.getTask(taskId);
+    }
+
+    @PostMapping("/")
+    TasksService.Task addNewTask(@RequestBody AddTaskBody body) {
+        var index = tasksService.addTask(body.task);
+        return tasksService.getTask(index);
+    }
+
+    @PutMapping("/{id}/done")
+    TasksService.Task setTaskDone(@PathVariable("id") int taskId) {
+        tasksService.setTaskDone(taskId, true);
+        return tasksService.getTask(taskId);
+    }
+
+    @DeleteMapping("/{id}/done")
+    TasksService.Task setTaskUndone(@PathVariable("id") int taskId) {
+        tasksService.setTaskDone(taskId, false);
+        return tasksService.getTask(taskId);
     }
 }
