@@ -24,7 +24,7 @@ public class TasksController {
     }
 
     @GetMapping("/{id}")
-    TasksService.Task getSomethingElse(@PathVariable("id") int taskId) {
+    TasksService.Task getTaskById(@PathVariable("id") int taskId) {
         return tasksService.getTask(taskId);
     }
 
