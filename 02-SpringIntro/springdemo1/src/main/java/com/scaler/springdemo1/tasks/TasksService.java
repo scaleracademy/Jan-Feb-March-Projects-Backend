@@ -1,44 +1,39 @@
 package com.scaler.springdemo1.tasks;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TasksService {
+	
+	@Autowired
+	private TaskRepository taskRepository;
 
-    @AllArgsConstructor
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PRIVATE)
-    static class Task {
-        String name;
-        boolean done;
-    }
+	List<Task> getAllTasks(Integer size, Integer page) {
+		Pageable pageable;
 
-    private ArrayList<Task> tasks = new ArrayList<>();
+		pageable = PageRequest.of(page - 1, size);
 
-    List<Task> getAllTasks() {
-        return tasks;
-    }
+		return taskRepository.findAll(pageable).getContent();
+	}
 
     int addTask(String taskName) {
         var task = new Task(taskName, false);
-        tasks.add(task);
-        return tasks.indexOf(task);
+		task = taskRepository.save(task);
+		return task.getId();
     }
 
     Task getTask(int index) {
-        var task = tasks.get(index); // handle case of wrong index
+        var task = taskRepository.getById(index); // handle case of wrong index
         return task;
     }
 
     Task setTaskDone(int index, boolean done) {
-        var task = tasks.get(index);
+        var task = taskRepository.getById(index);
         task.setDone(done);
         return task;
     }
