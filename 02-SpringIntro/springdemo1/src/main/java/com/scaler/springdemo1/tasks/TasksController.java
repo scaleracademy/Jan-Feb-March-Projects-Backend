@@ -1,6 +1,9 @@
 package com.scaler.springdemo1.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,9 +18,18 @@ public class TasksController {
 
     @Autowired TasksService tasksService;
 
+    //Implement paging here
+
     @GetMapping("/")
     List<Tasks> getAllTask() {
-            return tasksService.getAllTasks();
+        return tasksService.getAllTasks();
+    }
+
+    @GetMapping("/page/{page}")
+    List<Tasks> getAllTask(@PathVariable("page") Integer page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Tasks> tasks = tasksService.getAllTasks(pageable);
+        return (List<Tasks>) tasks;
     }
 
     @GetMapping("/{id}")
