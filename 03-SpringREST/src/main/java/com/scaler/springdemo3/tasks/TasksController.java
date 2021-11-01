@@ -1,8 +1,6 @@
 package com.scaler.springdemo3.tasks;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,10 +8,6 @@ import java.util.List;
 @RequestMapping("/tasks")
 @RestController
 public class TasksController {
-    @Data
-    static class AddTaskBody {
-        String task;
-    }
 
     @Autowired
     TasksService tasksService;
@@ -29,7 +23,7 @@ public class TasksController {
     }
 
     @PostMapping("/")
-    Task addNewTask(@RequestBody AddTaskBody body) {
+    Task addNewTask(@RequestBody AddTaskDto body) {
         var index = tasksService.addTask(body.task);
         return tasksService.getTask(index);
     }
