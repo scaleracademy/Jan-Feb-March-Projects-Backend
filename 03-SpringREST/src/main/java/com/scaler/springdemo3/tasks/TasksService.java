@@ -1,5 +1,6 @@
 package com.scaler.springdemo3.tasks;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -7,26 +8,27 @@ import java.util.List;
 
 @Service
 public class TasksService {
-    private ArrayList<Task> tasks = new ArrayList<>();
+    @Autowired TasksRepository tasksRepo;
 
     List<Task> getAllTasks() {
-        return tasks;
+        return tasksRepo.findAll();
     }
 
-    int addTask(String taskName) {
+    Task addTask(String taskName) {
         var task = new Task(taskName, false);
-        tasks.add(task);
-        return tasks.indexOf(task);
+        var savedTask = tasksRepo.save(task);
+        return savedTask;
     }
 
     Task getTask(int index) {
-        var task = tasks.get(index); // handle case of wrong index
+        var task = tasksRepo.getById(index); // handle case of wrong index
         return task;
     }
 
     Task setTaskDone(int index, boolean done) {
-        var task = tasks.get(index);
+        var task = tasksRepo.getById(index);
         task.setDone(done);
-        return task;
+        var updatedTask = tasksRepo.save(task);
+        return updatedTask;
     }
 }

@@ -24,8 +24,8 @@ public class TasksController {
 
     @PostMapping("/")
     Task addNewTask(@RequestBody AddTaskDto body) {
-        var index = tasksService.addTask(body.task);
-        return tasksService.getTask(index);
+        var savedTask = tasksService.addTask(body.task);
+        return savedTask;
     }
 
     @PutMapping("/{id}/done")
