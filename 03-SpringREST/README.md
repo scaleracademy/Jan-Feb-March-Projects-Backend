@@ -20,3 +20,8 @@
       ```
       when we delete task 1.3, Task 1 should turn to **done**
    4. There is **NO SEPARATE TABLE** for _sub tasks_. In above example, Task 1 as well as Task 1.1, 1.2 etc are all rows of the task table only
+   5. Handle circular dependency (eg: following should not happen) 
+      ```
+      Task A -> depends on Task B -> depends on Task A
+      Task A -> depends on Task B -> ...... -> depends on Task A
+      ```
